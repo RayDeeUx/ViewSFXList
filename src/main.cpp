@@ -1,4 +1,5 @@
 #include <Geode/modify/AudioAssetsBrowser.hpp>
+#include <Geode/modify/CustomSongWidget.hpp>
 #include "ErysSFXBrowser.hpp"
 #include "Manager.hpp"
 
@@ -40,5 +41,29 @@ class $modify(MyAudioAssetsBrowser, AudioAssetsBrowser) {
 		Manager::get()->managerLevelName = static_cast<CCString*>(hopefullyMyUserObject)->getCString();
 		Manager::get()->managerSFXIDs = static_cast<std::vector<int>>(m_sfxIds);
 		ErysSFXBrowser::create()->show();
+	}
+};
+
+class $modify(MyCustomSongWidget, CustomSongWidget) {
+	static void onModify(auto& self) {
+		(void) self.setHookPriority("CustomSongWidget::init", -3999);
+		if (Loader::get()->isModLoaded("spaghettdev.songpreview")) (void) self.setHookPriorityAfterPost("CustomSongWidget::updateWithMultiAssets", "spaghettdev.songpreview");
+		else if (Loader::get()->isModLoaded("raydeeux.copysongid")) (void) self.setHookPriorityAfterPost("CustomSongWidget::updateWithMultiAssets", "raydeeux.copysongid");
+		else (void) self.setHookPriority("CustomSongWidget::updateWithMultiAssets", -3999);
+	}
+	bool init(SongInfoObject* songInfo, CustomSongDelegate* songDelegate, bool showSongSelect, bool showPlayMusic, bool showDownload, bool isRobtopSong, bool unkBool, bool isMusicLibrary, int unk) {
+		if (!CustomSongWidget::init(songInfo, songDelegate, showSongSelect, showPlayMusic, showDownload, isRobtopSong, unkBool, isMusicLibrary, unk)) return false;
+		if (!LevelEditorLayer::get() || CCScene::get()->getChildByType<SetupSongTriggerPopup>(0) || !this->getParent() || !this->getParent()->getParent() || !typeinfo_cast<CustomSongLayer*>(this->getParent()->getParent())) return true;
+		if (!m_playbackBtn || !m_infoBtn) return true;
+		m_infoBtn->setVisible(true);
+		if (m_playbackBtn->isVisible() || showPlayMusic) m_infoBtn->setPositionX(-155.f);
+		return true;
+	}
+	void updateWithMultiAssets(gd::string songList, gd::string sfxList, int p2) {
+		CustomSongWidget::updateWithMultiAssets(songList, sfxList, p2);
+		if (!LevelEditorLayer::get() || CCScene::get()->getChildByType<SetupSongTriggerPopup>(0) || !this->getParent() || !this->getParent()->getParent() || !typeinfo_cast<CustomSongLayer*>(this->getParent()->getParent())) return;
+		if (!m_playbackBtn || !m_infoBtn) return;
+		m_infoBtn->setVisible(true);
+		if (m_playbackBtn->isVisible() || m_showPlayMusicBtn) m_infoBtn->setPositionX(-1552.f);
 	}
 };
