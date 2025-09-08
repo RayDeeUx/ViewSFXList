@@ -69,7 +69,7 @@ class $modify(MyCustomSongWidget, CustomSongWidget) {
 		return true;
 	}
 	void onViewErysSFXList(CCObject* sender) {
-		if (!GJBaseGameLayer::get() || !GJBaseGameLayer::get()->m_level || GJBaseGameLayer::get()->m_level->m_sfxIDs.empty()) return;
+		if (!GJBaseGameLayer::get() || !GJBaseGameLayer::get()->m_level) return;
 		CCNode* senderAsNode = typeinfo_cast<CCNode*>(sender);
 		if (!senderAsNode) return;
 		if (senderAsNode->getID() != "view-sfx-list"_spr) return;
