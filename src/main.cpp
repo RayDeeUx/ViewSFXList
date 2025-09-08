@@ -47,23 +47,47 @@ class $modify(MyAudioAssetsBrowser, AudioAssetsBrowser) {
 class $modify(MyCustomSongWidget, CustomSongWidget) {
 	static void onModify(auto& self) {
 		(void) self.setHookPriority("CustomSongWidget::init", -3999);
-		if (Loader::get()->isModLoaded("spaghettdev.songpreview")) (void) self.setHookPriorityAfterPost("CustomSongWidget::updateWithMultiAssets", "spaghettdev.songpreview");
-		else if (Loader::get()->isModLoaded("raydeeux.copysongid")) (void) self.setHookPriorityAfterPost("CustomSongWidget::updateWithMultiAssets", "raydeeux.copysongid");
-		else (void) self.setHookPriority("CustomSongWidget::updateWithMultiAssets", -3999);
 	}
 	bool init(SongInfoObject* songInfo, CustomSongDelegate* songDelegate, bool showSongSelect, bool showPlayMusic, bool showDownload, bool isRobtopSong, bool unkBool, bool isMusicLibrary, int unk) {
 		if (!CustomSongWidget::init(songInfo, songDelegate, showSongSelect, showPlayMusic, showDownload, isRobtopSong, unkBool, isMusicLibrary, unk)) return false;
-		if (!LevelEditorLayer::get() || CCScene::get()->getChildByType<SetupSongTriggerPopup>(0) || !this->getParent() || !this->getParent()->getParent() || !typeinfo_cast<CustomSongLayer*>(this->getParent()->getParent())) return true;
-		if (!m_playbackBtn || !m_infoBtn) return true;
-		m_infoBtn->setVisible(true);
-		if (m_playbackBtn->isVisible() || showPlayMusic) m_infoBtn->setPositionX(-155.f);
+		LevelEditorLayer* lel = LevelEditorLayer::get();
+		if (!lel || !CCScene::get() || CCScene::get()->getChildByType<SetupSongTriggerPopup>(0) || !CCScene::get()->getChildByType<LevelSettingsLayer>(0)) return true;
+		if (!m_buttonMenu || m_buttonMenu->getChildByID("dummy-info-button-for-milkcat"_spr)) return true;
+		if (lel->m_level->m_sfxIDs.empty()) return true;
+		// TODO: unk is probably an enum that might become a Geode addition!!! 1 == audio asset browser viewing level-specific assets
+		if (unk != 0 || isMusicLibrary) return true;
+		if (Loader::get()->isModLoaded("taswert.showaudioassets")) return true; // avoid double buttons. although HOLY SHIT the codebase in that mod is questionable as hell :sob:
+		CCSprite* infoSprite = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
+		infoSprite->setScale(.65f);
+		CCMenuItemSpriteExtra* sfxListBtn = CCMenuItemSpriteExtra::create(infoSprite, this, menu_selector(MyCustomSongWidget::onViewErysSFXList));
+		sfxListBtn->setSizeMult(1.2f);
+		sfxListBtn->m_scaleMultiplier = 1.26f;
+		sfxListBtn->setPosition(-155.f, -130.f);
+		sfxListBtn->setID("view-sfx-list"_spr);
+		sfxListBtn->setUserObject("level-name"_spr, CCString::create(lel->m_level->m_levelName));
+		m_buttonMenu->addChild(sfxListBtn);
 		return true;
 	}
-	void updateWithMultiAssets(gd::string songList, gd::string sfxList, int p2) {
-		CustomSongWidget::updateWithMultiAssets(songList, sfxList, p2);
-		if (!LevelEditorLayer::get() || CCScene::get()->getChildByType<SetupSongTriggerPopup>(0) || !this->getParent() || !this->getParent()->getParent() || !typeinfo_cast<CustomSongLayer*>(this->getParent()->getParent())) return;
-		if (!m_playbackBtn || !m_infoBtn) return;
-		m_infoBtn->setVisible(true);
-		if (m_playbackBtn->isVisible() || m_showPlayMusicBtn) m_infoBtn->setPositionX(-1552.f);
+	void onViewErysSFXList(CCObject* sender) {
+		if (!GJBaseGameLayer::get() || !GJBaseGameLayer::get()->m_level || GJBaseGameLayer::get()->m_level->m_sfxIDs.empty()) return;
+		CCNode* senderAsNode = typeinfo_cast<CCNode*>(sender);
+		if (!senderAsNode) return;
+		if (senderAsNode->getID() != "view-sfx-list"_spr) return;
+
+		std::vector<int> songIDVector = {};
+		for (auto songIDStr : utils::string::split(GJBaseGameLayer::get()->m_level->m_songIDs, ",")) {
+			if (const int toPush = utils::numFromString<int>(songIDStr).unwrapOr(-1); toPush != -1) songIDVector.push_back(toPush);
+		}
+
+		gd::vector<int> songIDVectorGD = static_cast<gd::vector<int>>(songIDVector);
+
+		std::vector<int> sfxIDVector = {};
+		for (auto sfxIDStr : utils::string::split(GJBaseGameLayer::get()->m_level->m_sfxIDs, ",")) {
+			if (const int toPush = utils::numFromString<int>(sfxIDStr).unwrapOr(-1); toPush != -1) sfxIDVector.push_back(toPush);
+		}
+
+		gd::vector<int> sfxIDVectorGD = static_cast<gd::vector<int>>(sfxIDVector);
+
+		AudioAssetsBrowser::create(songIDVectorGD, sfxIDVectorGD)->show();
 	}
 };

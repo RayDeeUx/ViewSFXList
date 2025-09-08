@@ -41,8 +41,8 @@ jobs:
         with:
           # build-config: RelWithDebInfo
           # export-pdb: true
-          # bindings: RayDeeUx/bindings
-          # bindings-ref: "foobar"
+          bindings: RayDeeUx/bindings
+          bindings-ref: "robtop-is-a-fucking-dumbass"
           combine: true
           target: ${{ matrix.config.target }}
 
