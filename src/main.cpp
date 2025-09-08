@@ -62,7 +62,8 @@ class $modify(MyCustomSongWidget, CustomSongWidget) {
 		CCMenuItemSpriteExtra* sfxListBtn = CCMenuItemSpriteExtra::create(infoSprite, this, menu_selector(MyCustomSongWidget::onViewErysSFXList));
 		sfxListBtn->setSizeMult(1.2f);
 		sfxListBtn->m_scaleMultiplier = 1.26f;
-		sfxListBtn->setPosition(-155.f, -130.f);
+		if (Loader::get()->isModLoaded("spaghettdev.songpreview")) sfxListBtn->setPosition(-155.f, -130.f);
+		else sfxListBtn->setPosition(-120.f, -130.f);
 		sfxListBtn->setID("view-sfx-list"_spr);
 		sfxListBtn->setUserObject("level-name"_spr, CCString::create(lel->m_level->m_levelName));
 		m_buttonMenu->addChild(sfxListBtn);
@@ -75,15 +76,19 @@ class $modify(MyCustomSongWidget, CustomSongWidget) {
 		if (senderAsNode->getID() != "view-sfx-list"_spr) return;
 
 		std::vector<int> songIDVector = {};
-		for (auto songIDStr : utils::string::split(GJBaseGameLayer::get()->m_level->m_songIDs, ",")) {
-			if (const int toPush = utils::numFromString<int>(songIDStr).unwrapOr(-1); toPush != -1) songIDVector.push_back(toPush);
+		if (const std::string& songIDs = static_cast<std::string>(GJBaseGameLayer::get()->m_level->m_songIDs); !songIDs.empty()) {
+			for (auto songIDStr : utils::string::split(songIDs, ",")) {
+				if (const int toPush = utils::numFromString<int>(songIDStr).unwrapOr(-1); toPush != -1) songIDVector.push_back(toPush);
+			}
 		}
 
 		gd::vector<int> songIDVectorGD = static_cast<gd::vector<int>>(songIDVector);
 
 		std::vector<int> sfxIDVector = {};
-		for (auto sfxIDStr : utils::string::split(GJBaseGameLayer::get()->m_level->m_sfxIDs, ",")) {
-			if (const int toPush = utils::numFromString<int>(sfxIDStr).unwrapOr(-1); toPush != -1) sfxIDVector.push_back(toPush);
+		if (const std::string& sfxIDs = static_cast<std::string>(GJBaseGameLayer::get()->m_level->m_sfxIDs); !sfxIDs.empty()) {
+			for (auto sfxIDStr: utils::string::split(sfxIDs, ",")) {
+				if (const int toPush = utils::numFromString<int>(sfxIDStr).unwrapOr(-1); toPush != -1) sfxIDVector.push_back(toPush);
+			}
 		}
 
 		gd::vector<int> sfxIDVectorGD = static_cast<gd::vector<int>>(sfxIDVector);
