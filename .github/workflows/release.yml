@@ -40,9 +40,10 @@ jobs:
         uses: geode-sdk/build-geode-mod@main
         with:
           # build-config: RelWithDebInfo
+          # export-symbols: true
           # export-pdb: true
-          bindings: RayDeeUx/bindings
-          bindings-ref: "robtop-is-a-fucking-dumbass"
+          # bindings: RayDeeUx/bindings
+          # bindings-ref: "robtop-is-a-fucking-dumbass"
           combine: true
           target: ${{ matrix.config.target }}
 
