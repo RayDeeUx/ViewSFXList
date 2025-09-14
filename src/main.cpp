@@ -8,7 +8,7 @@ using namespace geode::prelude;
 class $modify(MyAudioAssetsBrowser, AudioAssetsBrowser) {
 	bool init(gd::vector<int>& songIds, gd::vector<int>& sfxIds) {
 		if (!AudioAssetsBrowser::init(songIds, sfxIds)) return false;
-		if (!m_buttonMenu || static_cast<std::vector<int>>(sfxIds).empty()) return true;
+		if (!m_buttonMenu || sfxIds.empty()) return true;
 
 		CCLabelBMFont* viewSFXLabel = CCLabelBMFont::create("View\nSFXs", "bigFont.fnt");
 		viewSFXLabel->setAlignment(kCCTextAlignmentCenter);
