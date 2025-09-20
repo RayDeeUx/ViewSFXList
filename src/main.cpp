@@ -30,7 +30,6 @@ class $modify(MyAudioAssetsBrowser, AudioAssetsBrowser) {
 		return true;
 	}
 	void onViewErysSFXList(CCObject* sender) {
-
 		CCNode* senderAsNode = typeinfo_cast<CCNode*>(sender);
 		if (!senderAsNode) return;
 		if (senderAsNode->getID() != "view-sfx-list"_spr) return;
@@ -39,7 +38,7 @@ class $modify(MyAudioAssetsBrowser, AudioAssetsBrowser) {
 		if (!hopefullyMyUserObject || !typeinfo_cast<CCString*>(hopefullyMyUserObject)) return;
 
 		Manager::get()->managerLevelName = static_cast<CCString*>(hopefullyMyUserObject)->getCString();
-		Manager::get()->managerSFXIDs = static_cast<std::vector<int>>(m_sfxIds);
+		Manager::get()->managerSFXIDs = m_sfxIds;
 		ErysSFXBrowser::create()->show();
 	}
 };

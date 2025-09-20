@@ -121,9 +121,6 @@ bool ErysSFXBrowser::setup() {
 	this->m_mainLayer->setID("main-layer"_spr);
 	this->m_bgSprite->setID("background"_spr);
 
-	Manager::get()->managerLevelName = "";
-	Manager::get()->managerSFXIDs = {};
-
 	this->setID("ErysSFXBrowser"_spr);
 
 	mdm->getCustomContentURL(); // i actually fucking hate myself. this was all i needed??@!@ BUT NOW TOUCHPRIO BREAKS?!?!?!?
@@ -135,6 +132,11 @@ bool ErysSFXBrowser::setup() {
 	useScrollbarLabel->setPosition(this->m_title->getPosition());
 	useScrollbarLabel->setPositionY(useScrollbarLabel->getPositionY() - 13.25f);
 	useScrollbarLabel->setID("scrollbar-warning"_spr);
+
+	Loader::get()->queueInMainThread([]() {
+		Manager::get()->managerLevelName = "";
+		Manager::get()->managerSFXIDs = {};
+	});
 
 	return true;
 }

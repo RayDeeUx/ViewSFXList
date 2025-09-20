@@ -11,7 +11,7 @@ protected:
 	static Manager* instance;
 public:
 
-	std::vector<int> managerSFXIDs = {};
+	gd::vector<int> managerSFXIDs = {};
 	std::string managerLevelName = "";
 
 	static Manager* get() {
