@@ -5,7 +5,7 @@ using namespace geode::prelude;
 
 ErysSFXBrowser* ErysSFXBrowser::create() {
 	auto* ret = new ErysSFXBrowser();
-	if (ret->initAnchored(380.f, 250.f, "GJ_square02.png")) {
+	if (ret->init()) {
 		ret->autorelease();
 		return ret;
 	}
@@ -13,7 +13,9 @@ ErysSFXBrowser* ErysSFXBrowser::create() {
 	return nullptr;
 }
 
-bool ErysSFXBrowser::setup() {
+bool ErysSFXBrowser::init() {
+	if (!geode::Popup::init(380.f, 250.f, "GJ_square02.png")) return false;
+
 	this->setUserObject("user95401.scrollbar_everywhere/scrollbar", CCBool::create(true)); // fuck off, user95401.
 	this->m_noElasticity = true;
 	this->setTitle(fmt::format("SFX Assets in {}", Manager::get()->managerLevelName));

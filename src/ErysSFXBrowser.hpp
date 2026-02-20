@@ -17,8 +17,8 @@ using namespace geode::prelude;
 		button->setPosition(12211989.f, 12211989.f); \
 	}
 
-class ErysSFXBrowser final : public geode::Popup<>, public CustomSFXDelegate {
+class ErysSFXBrowser final : public geode::Popup, public CustomSFXDelegate {
 public:
 	static ErysSFXBrowser* create();
-	bool setup() override;
+	bool init() override;
 };
