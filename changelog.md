@@ -1,4 +1,6 @@
 # ViewSFXList Changelog
+## v1.0.3
+- Port to GD 2.2081.
 ## v1.0.2
 - Fix a really nasty bug where attempting to view SFX lists on Android just wouldn't work at all. (For further comments, please see the changelog for v1.0.1.)
 ## v1.0.1
