@@ -1,4 +1,6 @@
 # ViewSFXList Changelog
+## v1.0.4
+- Minor refactors.
 ## v1.0.3
 - Port to GD 2.2081.
 ## v1.0.2

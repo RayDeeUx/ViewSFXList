@@ -31,8 +31,7 @@ class $modify(MyAudioAssetsBrowser, AudioAssetsBrowser) {
 	}
 	void onViewErysSFXList(CCObject* sender) {
 		CCNode* senderAsNode = typeinfo_cast<CCNode*>(sender);
-		if (!senderAsNode) return;
-		if (senderAsNode->getID() != "view-sfx-list"_spr) return;
+		if (!senderAsNode || sender->getTag() != 9062025 || senderAsNode->getID() != "view-sfx-list"_spr) return;
 
 		CCObject* hopefullyMyUserObject = senderAsNode->getUserObject("level-name"_spr);
 		if (!hopefullyMyUserObject || !typeinfo_cast<CCString*>(hopefullyMyUserObject)) return;
@@ -64,6 +63,7 @@ class $modify(MyCustomSongWidget, CustomSongWidget) {
 		if (Loader::get()->isModLoaded("spaghettdev.songpreview")) sfxListBtn->setPosition(-155.f, -130.f);
 		else sfxListBtn->setPosition(-120.f, -130.f);
 		sfxListBtn->setID("view-sfx-list"_spr);
+		sfxListBtn->setTag(9062025);
 		sfxListBtn->setUserObject("level-name"_spr, CCString::create(lel->m_level->m_levelName));
 		m_buttonMenu->addChild(sfxListBtn);
 		return true;
@@ -71,8 +71,7 @@ class $modify(MyCustomSongWidget, CustomSongWidget) {
 	void onViewErysSFXList(CCObject* sender) {
 		if (!GJBaseGameLayer::get() || !GJBaseGameLayer::get()->m_level) return;
 		CCNode* senderAsNode = typeinfo_cast<CCNode*>(sender);
-		if (!senderAsNode) return;
-		if (senderAsNode->getID() != "view-sfx-list"_spr) return;
+		if (!senderAsNode || sender->getTag() != 9062025 || senderAsNode->getID() != "view-sfx-list"_spr) return;
 
 		std::vector<int> songIDVector = {};
 		if (const std::string& songIDs = static_cast<std::string>(GJBaseGameLayer::get()->m_level->m_songIDs); !songIDs.empty()) {
