@@ -49,7 +49,14 @@ class $modify(MyCustomSongWidget, CustomSongWidget) {
 	bool init(SongInfoObject* songInfo, CustomSongDelegate* songDelegate, bool showSongSelect, bool showPlayMusic, bool showDownload, bool isRobtopSong, bool unkBool, bool isMusicLibrary, int unk, bool fuck, bool you) {
 		if (!CustomSongWidget::init(songInfo, songDelegate, showSongSelect, showPlayMusic, showDownload, isRobtopSong, unkBool, isMusicLibrary, unk, fuck, you)) return false;
 		LevelEditorLayer* lel = LevelEditorLayer::get();
-		if (!lel || !CCScene::get() || CCScene::get()->getChildByType<SetupSongTriggerPopup>(0) || !CCScene::get()->getChildByType<LevelSettingsLayer>(0)) return true;
+		if (!lel || !CCScene::get() || CCScene::get()->getChildrenCount() < 1) return true;
+		#ifndef GEODE_IS_MACOS
+		if (CCScene::get()->getChildByType<SetupSongTriggerPopup>(0) || !CCScene::get()->getChildByType<LevelSettingsLayer>(0)) return true;
+		#else
+		for (CCNode* child : CCScene::get()->getChildrenExt<CCNode>()) {
+			if (geode::cocos::getObjectName() == "LevelSettingsLayer" || geode::cocos::getObjectName() == "SetupSongTriggerPopup") return true;
+		}
+		#endif
 		if (!m_buttonMenu || m_buttonMenu->getChildByID("dummy-info-button-for-milkcat"_spr)) return true;
 		if (lel->m_level->m_sfxIDs.empty()) return true;
 		// TODO: unk is probably an enum that might become a Geode addition!!! 1 == audio asset browser viewing level-specific assets
