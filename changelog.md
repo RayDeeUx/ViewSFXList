@@ -1,4 +1,6 @@
 # ViewSFXList Changelog
+## v1.0.5
+- 2.2091 as a game update was a net negative.
 ## v1.0.4
 - Minor refactors.
 ## v1.0.3

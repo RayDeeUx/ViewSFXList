@@ -6,7 +6,7 @@
 using namespace geode::prelude;
 
 class $modify(MyAudioAssetsBrowser, AudioAssetsBrowser) {
-	bool init(gd::vector<int>& songIds, gd::vector<int>& sfxIds) {
+	bool init(std::vector<int>& songIds, std::vector<int>& sfxIds) {
 		if (!AudioAssetsBrowser::init(songIds, sfxIds)) return false;
 		if (!m_buttonMenu || sfxIds.empty()) return true;
 
@@ -80,8 +80,6 @@ class $modify(MyCustomSongWidget, CustomSongWidget) {
 			}
 		}
 
-		gd::vector<int> songIDVectorGD = static_cast<gd::vector<int>>(songIDVector);
-
 		std::vector<int> sfxIDVector = {};
 		if (const std::string& sfxIDs = static_cast<std::string>(GJBaseGameLayer::get()->m_level->m_sfxIDs); !sfxIDs.empty()) {
 			for (auto sfxIDStr: utils::string::split(sfxIDs, ",")) {
@@ -89,8 +87,6 @@ class $modify(MyCustomSongWidget, CustomSongWidget) {
 			}
 		}
 
-		gd::vector<int> sfxIDVectorGD = static_cast<gd::vector<int>>(sfxIDVector);
-
-		AudioAssetsBrowser::create(songIDVectorGD, sfxIDVectorGD)->show();
+		AudioAssetsBrowser::create(songIDVector, sfxIDVector)->show();
 	}
 };
