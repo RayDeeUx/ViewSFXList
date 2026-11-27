@@ -46,8 +46,8 @@ class $modify(MyCustomSongWidget, CustomSongWidget) {
 	static void onModify(auto& self) {
 		(void) self.setHookPriority("CustomSongWidget::init", -3999);
 	}
-	bool init(SongInfoObject* songInfo, CustomSongDelegate* songDelegate, bool showSongSelect, bool showPlayMusic, bool showDownload, bool isRobtopSong, bool unkBool, bool isMusicLibrary, int unk) {
-		if (!CustomSongWidget::init(songInfo, songDelegate, showSongSelect, showPlayMusic, showDownload, isRobtopSong, unkBool, isMusicLibrary, unk)) return false;
+	bool init(SongInfoObject* songInfo, CustomSongDelegate* songDelegate, bool showSongSelect, bool showPlayMusic, bool showDownload, bool isRobtopSong, bool unkBool, bool isMusicLibrary, int unk, bool fuck, bool you) {
+		if (!CustomSongWidget::init(songInfo, songDelegate, showSongSelect, showPlayMusic, showDownload, isRobtopSong, unkBool, isMusicLibrary, unk, fuck, you)) return false;
 		LevelEditorLayer* lel = LevelEditorLayer::get();
 		if (!lel || !CCScene::get() || CCScene::get()->getChildByType<SetupSongTriggerPopup>(0) || !CCScene::get()->getChildByType<LevelSettingsLayer>(0)) return true;
 		if (!m_buttonMenu || m_buttonMenu->getChildByID("dummy-info-button-for-milkcat"_spr)) return true;
