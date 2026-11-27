@@ -59,7 +59,7 @@ bool ErysSFXBrowser::init() {
 			continue;
 		}
 
-		CustomSFXWidget* sfxWidget = CustomSFXWidget::create(sfxObject, this, false, true, true, true, true);
+		CustomSFXWidget* sfxWidget = CustomSFXWidget::create(sfxObject, this, false, true, true, true, true, false, false);
 		// bool p2 is for showing "Use" button
 		// bool p3 is for showing "Playback" button
 		// bool p4 is for showing "Download" button
