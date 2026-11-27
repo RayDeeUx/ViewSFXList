@@ -54,7 +54,7 @@ class $modify(MyCustomSongWidget, CustomSongWidget) {
 		if (CCScene::get()->getChildByType<SetupSongTriggerPopup>(0) || !CCScene::get()->getChildByType<LevelSettingsLayer>(0)) return true;
 		#else
 		for (CCNode* child : CCScene::get()->getChildrenExt<CCNode>()) {
-			if (geode::cocos::getObjectName() == "LevelSettingsLayer" || geode::cocos::getObjectName() == "SetupSongTriggerPopup") return true;
+			if (geode::cocos::getObjectName(child) == "LevelSettingsLayer" || geode::cocos::getObjectName(child) == "SetupSongTriggerPopup") return true;
 		}
 		#endif
 		if (!m_buttonMenu || m_buttonMenu->getChildByID("dummy-info-button-for-milkcat"_spr)) return true;
